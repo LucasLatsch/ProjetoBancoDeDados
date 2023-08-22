@@ -116,12 +116,23 @@ create table pedido_produto(
 alter table pedido_produto add column pedpro_int_quantidade integer;
 
 --criar view nota fiscal
-create view nota_fiscal as
-select pedido.ped_tx_forma_pg , pedido.ped_dt_data_venda,
-pedido_produto.pedpro_int_quantidade, produto.pro_int_valor, produto.pro_tx_nomepro, usuario.user_tx_nome,
-usuario.user_tx_cpf, cliente.fk_end_cd_id
-from pedido, produto, cliente, usuario, pedido_produto;
 
+
+create view nota_fiscal as
+select
+    p.ped_tx_forma_pg ,
+    p.ped_dt_data_venda ,
+    p.ped_int_quantidade,
+    pr.pro_int_valor ,
+    pr.pro_tx_nomepro,
+    u.user_tx_nome ,
+    u.user_tx_cpf 
+from usuario u
+JOIN cliente c ON u.user_cd_id = c.fk_user_cd_id  
+JOIN pedido p ON c.cli_cd_id  = p.fk_cli_cd_id 
+JOIN pedido_produto pp ON p.ped_cd_id  = pp.fk_ped_cd_id 
+join produto pr on pp.fk_pro_cd_id  = pr.pro_cd_id ;
+select * from nota_fiscal nf ;
 
 --inserindo dados nas tabelas
 -- inserindo estados
@@ -5801,7 +5812,7 @@ insert into pedido (ped_tx_forma_pg, ped_tx_num_cartao, ped_int_quantidade, ped_
 
 update pedido set fk_cli_cd_id  = 1 where ped_cd_id  < 5;
 
--- inserindo pedido_produto
+--inserindo pedido_produto
 
 insert into pedido_produto (fk_pro_cd_id, fk_ped_cd_id) values 
 	(10,1),
