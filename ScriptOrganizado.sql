@@ -1,5 +1,5 @@
 -- criando a base de dados
-create database ecommerce;
+create database debeats;
 
 --criando cliente (finalizado aparentemente)
 create user cliente password '123456';
@@ -8,11 +8,6 @@ on produto, categoria
 to cliente;
 grant insert 
 on pedido to cliente;
-
---area de teste
-select * from produto;
-select * from nota_fiscal;
-
 
 --criando vendedor
 create user vendedor password '112233';
@@ -23,7 +18,6 @@ to vendedor;
 grant insert, update 
 on produto 
 to vendedor;
-alter table categoria add column cat_tx_nome;
 
 --criando administrador
 create user administrador password '134679';
@@ -32,6 +26,7 @@ on categoria, cidade, cliente, endereco, estado,
 funcionario, pedido, pedido_produto, produto, usuario, nota_fiscal
 to administrador;
 
+--criando tabelas
 
 create table categoria(
 	cat_cd_id serial,
@@ -118,9 +113,7 @@ create table categoria(
 	cat_tx_descrição varchar(50),
 	primary key (cat_cd_id)
 );
- 
-alter table categoria rename column cat_tx_descrição to cat_tx_descricao;
---mudando o tamanho a variavel 
+alter table categoria rename column cat_tx_descrição to cat_tx_descricao; 
 alter table categoria alter column cat_tx_descricao type varchar(200);
 
 create table produto(
@@ -129,7 +122,7 @@ create table produto(
 	pro_tx_descricao varchar(256),
 	pro_int_estoque integer,
 	pro_dt_datafab date,
-	pro_int_valor integer,
+	pro_nm_valor float(4,2),
 	fk_fun_cd_id integer,
 	fk_cat_cd_id integer,
 	primary key (pro_cd_id),
@@ -162,9 +155,10 @@ JOIN cliente c ON u.user_cd_id = c.fk_user_cd_id
 JOIN pedido p ON c.cli_cd_id  = p.fk_cli_cd_id 
 JOIN pedido_produto pp ON p.ped_cd_id  = pp.fk_ped_cd_id 
 join produto pr on pp.fk_pro_cd_id  = pr.pro_cd_id ;
+
+--consultas na nota fiscal
 select * from nota_fiscal order by ped_tx_forma_pg;
 select * from nota_fiscal where pro_tx_nomepro like 'B%';
---inserindo dados nas tabelas
 
 -- inserindo estados
 insert into estado (est_cd_id, est_tx_estado, est_tx_sigla) values 
@@ -198,7 +192,6 @@ insert into estado (est_cd_id, est_tx_estado, est_tx_sigla) values
 update  estado set est_tx_pais = 'Brasil' where est_cd_id < 28;
 
 --inserindo cidades
-
 insert into cidade (cid_cd_id, cid_tx_nome, fk_est_cd_id) values
 (1, 'Afonso Cláudio', 8),
 (2, 'Água Doce do Norte', 8),
@@ -5765,16 +5758,12 @@ insert into cidade (cid_cd_id, cid_tx_nome, fk_est_cd_id) values
 (5563, 'Wanderlândia', 27),
 (5564, 'Xambioá', 27);
 
--- inserindo endereco usar na apresentação passando os inserts anteriores por copia e cola
-
 insert into endereco (end_tx_rua, end_tx_bairro, end_char_cep, end_int_numero, fk_cid_cd_id) values
 	('Rua Michel Salamoni', 'Mosela', '25675321', 257, 3645),
 	('Rua Olavo Bilac', 'Castelanea', '25640402', 852, 3645),
 	('Rua João Macedo', 'Coronel Veiga', '25655170', 33, 3645),
 	('Rua Alberto Torres', 'Centro', '25610060', 302, 3645),
 	('Rua Maria do Patrocinio Nunes Torres', 'Itamarati', '25710086', 5, 3645);
-
-select * from usuario;
 
 -- inserindo usuário  
 insert into usuario (user_tx_nome, user_tx_cpf, user_tx_senha, user_tx_email) values 
@@ -5783,8 +5772,6 @@ insert into usuario (user_tx_nome, user_tx_cpf, user_tx_senha, user_tx_email) va
 ('Amanda Tavares', '12345678922', '124', 'amanda@debeats.com'),
 ('Emanuel Cardoso', '98765432123', '447', 'emanuel@debeats.com'),
 ('Lucas Latsch ', '98765432321', '200', 'lucas@debeats.com');
-insert into usuario (user_tx_nome, user_tx_cpf, user_tx_senha, user_tx_email) values 
-	('Emanuel Cardoso', '98765432123', '456', 'emanuel@debeats.com');
 
 -- inserindo cliente
 insert into cliente (cli_tx_nomeusu, cli_dt_datanasc, fk_user_cd_id, fk_end_cd_id) values 
@@ -5794,8 +5781,8 @@ insert into cliente (cli_tx_nomeusu, cli_dt_datanasc, fk_user_cd_id, fk_end_cd_i
 ('AmandaTavares', now(), 5, 5);
 
 -- inserindo funcionario
-insert into funcionario (fk_user_cd_id) values (1),(3),(4),(5);
-select * from produto;
+insert into funcionario (fk_user_cd_id) values (2),(1),(4),(3),(5);
+
 -- inserindo categorias
 insert into categoria (cat_tx_nome, cat_tx_descricao) values 
 ('Violões','O mais popular dos instrumentos...'),
@@ -5808,7 +5795,7 @@ insert into categoria (cat_tx_nome, cat_tx_descricao) values
 ('Acessórios', 'Baquetas, palhetas e correias são indispensáveis');
 
 -- inserindo produtos
-insert into produto (pro_tx_nomepro, pro_tx_descricao, pro_int_estoque, pro_dt_datafab, pro_int_valor, fk_fun_cd_id, fk_cat_cd_id) values 
+insert into produto (pro_tx_nomepro, pro_tx_descricao, pro_int_estoque, pro_dt_datafab, pro_nm_valor, fk_fun_cd_id, fk_cat_cd_id) values 
 ('Violão Nylon', 'Violão acústico com cordas de nylon',20,to_date('2023-08-15','yyyy-mm-dd'), 200, 1, 1),
 ('Violão Aço', 'Violão acústico com cordas de aço',20,to_date('2023-08-15','yyyy-mm-dd'), 300, 1, 1),
 ('Violão Elétrico', 'Violão elétrico com cordas de aço',20,to_date('2023-08-15','yyyy-mm-dd'), 500, 1, 1),
@@ -5835,31 +5822,20 @@ insert into produto (pro_tx_nomepro, pro_tx_descricao, pro_int_estoque, pro_dt_d
 
 -- inserindo pedido
 insert into pedido (ped_tx_forma_pg, ped_tx_num_cartao, ped_int_quantidade, ped_dt_data_venda) values 
-('Débito', '1234123412341234', 1, now());
-insert into pedido (ped_tx_forma_pg, ped_tx_num_cartao, ped_int_quantidade, ped_dt_data_venda) values 
-('Fiado', 'Esperando', 1, now());
-update pedido set fk_cli_cd_id  = 1 where ped_cd_id  = 13;
-select * from pedido_produto;
-
-
-begin;
-	update pedido_produto set fk_ped_cd_id = null where fk_ped_cd_id = 1 ;
-truncate pedido cascade;
-
-rollback;
-end;
+('Débito', '1234123412341234', 1, now()),
+('Credito', '1234123412341234', 2, now()),
+('Dinheiro', null, 1, now()),
+('Pix', null, 5, now()),
+('Fiado', 'Esperando...', 3, now());
 
 --inserindo pedido_produto
-insert into pedido_produto (fk_pro_cd_id, fk_ped_cd_id) values 
-	;
-update pedido_produto set pedpro_int_quantidade = 1 where pedpro_cd_id < 9;
 insert into pedido_produto (fk_pro_cd_id, fk_ped_cd_id, pedpro_int_quantidade) values 
 	(10,9,1),
 	(19,9,10),
 	(12,13,2),
 	(18,12,3),
 	(17,10,4);
-
+	
 --criando consultas com group by
 select
 	count(e.est_tx_estado),
@@ -5870,9 +5846,8 @@ join estado e on c.fk_est_cd_id  = e.est_cd_id
 group by
 	e.est_tx_estado order by e.est_tx_estado ;
 
-
-
 --exemplos de index
+
 select * from cidade;
 select * from cidade where cid_tx_nome like 'P%';
 create index nomecidade on cidade(cid_tx_nome);
@@ -5880,4 +5855,3 @@ create index nomecidade on cidade(cid_tx_nome);
 select * from endereco;
 select * from endereco where end_tx_rua like '%i%';
 create index nomerua on endereco(end_tx_rua);
-
