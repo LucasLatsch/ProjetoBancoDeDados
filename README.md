@@ -41,10 +41,7 @@ Categorias:
 - Instrumentos de cordas;
 - Acessórios, baquetas, palhetas e correias;
 
-<!-- Quais são as funcionalidades --> 
-## 🔄 FUNCIONALIDADES ## 
 
--
 ## 💻 ACESSO AO PROJETO ##
 
     # Link do projeto
@@ -61,11 +58,12 @@ https://github.com/LucasLatsch/ProjetoBancoDeDados
   <img src="Modelo Lógico Projeto.png">
 
 </p>
+
 ## 🛠 TECNOLOGIAS UTILIZADAS ##
 - [Dbeaver](https://dbeaver.io/download/)
 - [Draw.io](https://www.drawio.com/)
 - [Git v2.41.0.3](https://git-scm.com/downloads)
-- [GitHub](https://www.drawio.com/)
+- [GitHub](https://www.github.com/)
 - [Postgres](https://www.postgresql.org/download/)
    
 
