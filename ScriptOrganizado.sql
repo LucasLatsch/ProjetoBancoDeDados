@@ -107,28 +107,20 @@ alter table pedido add column ped_dt_data_venda date;
 alter table pedido rename column ped_int_num_cartao to ped_tx_num_cartao;
 alter table pedido drop column ped_int_quantidade;
 
-create table categoria(
-	cat_cd_id serial,
-	cat_tx_nome varchar(50),
-	cat_tx_descrição varchar(50),
-	primary key (cat_cd_id)
-);
-alter table categoria rename column cat_tx_descrição to cat_tx_descricao; 
-alter table categoria alter column cat_tx_descricao type varchar(200);
-
 create table produto(
 	pro_cd_id serial,
 	pro_tx_nomepro varchar(20),
 	pro_tx_descricao varchar(256),
 	pro_int_estoque integer,
 	pro_dt_datafab date,
-	pro_nm_valor float(4,2),
+	pro_nm_valor float(4),
 	fk_fun_cd_id integer,
 	fk_cat_cd_id integer,
 	primary key (pro_cd_id),
 	foreign key (fk_fun_cd_id) references funcionario,
 	foreign key (fk_cat_cd_id) references categoria
 );
+alter table produto alter column pro_nm_valor type decimal(10,2);
 
 create table pedido_produto(
 	pedpro_cd_id serial,
@@ -145,8 +137,8 @@ create view nota_fiscal as
 select
     p.ped_tx_forma_pg ,
     p.ped_dt_data_venda ,
-    p.ped_int_quantidade,
-    pr.pro_int_valor ,
+    pp.pedpro_int_quantidade,
+    pr.pro_nm_valor ,
     pr.pro_tx_nomepro,
     u.user_tx_nome ,
     u.user_tx_cpf 
@@ -156,6 +148,7 @@ JOIN pedido p ON c.cli_cd_id  = p.fk_cli_cd_id
 JOIN pedido_produto pp ON p.ped_cd_id  = pp.fk_ped_cd_id 
 join produto pr on pp.fk_pro_cd_id  = pr.pro_cd_id ;
 
+drop view nota_fiscal;
 --consultas na nota fiscal
 select * from nota_fiscal order by ped_tx_forma_pg;
 select * from nota_fiscal where pro_tx_nomepro like 'B%';
@@ -5775,10 +5768,11 @@ insert into usuario (user_tx_nome, user_tx_cpf, user_tx_senha, user_tx_email) va
 
 -- inserindo cliente
 insert into cliente (cli_tx_nomeusu, cli_dt_datanasc, fk_user_cd_id, fk_end_cd_id) values 
-('EmanuelCardoso', now(), 2, 2),
-('BernardoGranja', now(), 3, 3),
-('LucianaBrand', now(), 4, 4),
-('AmandaTavares', now(), 5, 5);
+('EmanuelCardoso', now(), 4, 6),
+('BernardoGranja', now(), 1, 7),
+('LucianaBrand', now(), 2, 8),
+('AmandaTavares', now(), 3, 9),
+('LucasLatsch', now(), 5, 10);
 
 -- inserindo funcionario
 insert into funcionario (fk_user_cd_id) values (2),(1),(4),(3),(5);
@@ -5821,19 +5815,19 @@ insert into produto (pro_tx_nomepro, pro_tx_descricao, pro_int_estoque, pro_dt_d
 ('Baqueta', 'Souvenier favorito dos shows do rock',20,to_date('2023-08-15','yyyy-mm-dd'), 50, 1, 8);
 
 -- inserindo pedido
-insert into pedido (ped_tx_forma_pg, ped_tx_num_cartao, ped_int_quantidade, ped_dt_data_venda) values 
-('Débito', '1234123412341234', 1, now()),
-('Credito', '1234123412341234', 2, now()),
-('Dinheiro', null, 1, now()),
-('Pix', null, 5, now()),
-('Fiado', 'Esperando...', 3, now());
+insert into pedido (ped_tx_forma_pg, ped_tx_num_cartao, fk_cli_cd_id, ped_dt_data_venda) values 
+('Débito', '1234123412341234', 17, now()),
+('Credito', '1234123412341234', 18, now()),
+('Dinheiro', null, 19, now()),
+('Pix', null, 20, now()),
+('Fiado', 'Esperando...', 21, now());
 
 --inserindo pedido_produto
 insert into pedido_produto (fk_pro_cd_id, fk_ped_cd_id, pedpro_int_quantidade) values 
-	(10,9,1),
+	(10,8,1),
 	(19,9,10),
-	(12,13,2),
-	(18,12,3),
+	(12,7,2),
+	(18,6,3),
 	(17,10,4);
 	
 --criando consultas com group by
@@ -5855,3 +5849,16 @@ create index nomecidade on cidade(cid_tx_nome);
 select * from endereco;
 select * from endereco where end_tx_rua like '%i%';
 create index nomerua on endereco(end_tx_rua);
+
+select * from usuario;
+select * from usuario where user_tx_nome like '%e%';
+create index nomeusario on usuario(user_tx_nome);
+
+select * from produto;
+select * from produto where pro_tx_nomepro like 'B%';
+create index nomeproduto on produto(pro_tx_nomepro);
+
+--mesmo com index a busca de estado não é otimizada
+select * from estado;
+select * from estado where est_tx_estado  like '%a%';
+create index nomeest on estado(est_tx_estado);
