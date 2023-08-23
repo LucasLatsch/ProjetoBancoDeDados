@@ -54,7 +54,13 @@ https://github.com/LucasLatsch/ProjetoBancoDeDados
    Iniciamos este projeto de construção de banco de dados para um ecommerce tradicional transformando as regras de negócios descritas num Modelo Conceitual - que pretende apresentar as informações do projeto de maneira simples e visual, para que qualquer pessoa possa compreender de maneira geral a estrutura pensada para o projeto - e, logo após, estruturando o projeto num Modelo Lógico - onda aparecerão pela primeira vez informações mais aprofundadas como as conexões entre as chaves das tabelas. Para essas duas etapas do processo, a ferramenta principal foi o Draw.io.
 
    As tabelas foram criadas e estruturadas as suas relações no DBeaver. Nele geramos o Modelo Físico do projeto, bem como alimentamos o banco de dados com usuários, produtos, clientes, funcionários, informações pessoais, funções para os agentes e as já citadas categorias.
+<p align="center">
 
+  <img src="Modelo Conceitual Projeto.png">
+  
+  <img src="Modelo Lógico Projeto.png">
+
+</p>
 ## 🛠 TECNOLOGIAS UTILIZADAS ##
 - [Dbeaver](https://dbeaver.io/download/)
 - [Draw.io](https://www.drawio.com/)
