@@ -86,9 +86,12 @@ alter table pedido add column ped_dt_data_venda date;
 alter table pedido rename column ped_int_num_cartao to ped_tx_num_cartao;
 alter table pedido drop column ped_int_quantidade;
 
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> 000141ddc6985860397ca7e13f7062173d37179d
 create table produto(
 	pro_cd_id serial,
 	pro_tx_nomepro varchar(20),
@@ -102,6 +105,7 @@ create table produto(
 	foreign key (fk_fun_cd_id) references funcionario,
 	foreign key (fk_cat_cd_id) references categoria
 );
+alter table produto alter column pro_nm_valor type decimal(10,2);
 
 create table pedido_produto(
 	pedpro_cd_id serial,
@@ -118,9 +122,14 @@ create view nota_fiscal as
 select
     p.ped_tx_forma_pg ,
     p.ped_dt_data_venda ,
+<<<<<<< HEAD
     pp.pedpro_int_quantidade ,
     pr.pro_nm_valor ,
     pp.pedpro_int_quantidade * pr.pro_nm_valor as preco_total,
+=======
+    pp.pedpro_int_quantidade,
+    pr.pro_nm_valor ,
+>>>>>>> 000141ddc6985860397ca7e13f7062173d37179d
     pr.pro_tx_nomepro,
     u.user_tx_nome ,
     u.user_tx_cpf 
@@ -129,7 +138,12 @@ JOIN cliente c ON u.user_cd_id = c.fk_user_cd_id
 JOIN pedido p ON c.cli_cd_id  = p.fk_cli_cd_id 
 JOIN pedido_produto pp ON p.ped_cd_id  = pp.fk_ped_cd_id 
 join produto pr on pp.fk_pro_cd_id  = pr.pro_cd_id ;
+<<<<<<< HEAD
  drop view nota_fiscal; 
+=======
+
+drop view nota_fiscal;
+>>>>>>> 000141ddc6985860397ca7e13f7062173d37179d
 --consultas na nota fiscal
 select * from nota_fiscal order by ped_tx_forma_pg;
 select * from nota_fiscal where pro_tx_nomepro like 'B%';
@@ -5749,10 +5763,11 @@ insert into usuario (user_tx_nome, user_tx_cpf, user_tx_senha, user_tx_email) va
 
 -- inserindo cliente
 insert into cliente (cli_tx_nomeusu, cli_dt_datanasc, fk_user_cd_id, fk_end_cd_id) values 
-('EmanuelCardoso', now(), 2, 2),
-('BernardoGranja', now(), 3, 3),
-('LucianaBrand', now(), 4, 4),
-('AmandaTavares', now(), 5, 5);
+('EmanuelCardoso', now(), 4, 6),
+('BernardoGranja', now(), 1, 7),
+('LucianaBrand', now(), 2, 8),
+('AmandaTavares', now(), 3, 9),
+('LucasLatsch', now(), 5, 10);
 
 -- inserindo funcionario
 insert into funcionario (fk_user_cd_id) values (2),(1),(4),(3),(5);
@@ -5796,6 +5811,7 @@ insert into produto (pro_tx_nomepro, pro_tx_descricao, pro_int_estoque, pro_dt_d
 
 -- inserindo pedido
 insert into pedido (ped_tx_forma_pg, ped_tx_num_cartao, fk_cli_cd_id, ped_dt_data_venda) values 
+<<<<<<< HEAD
 ('Débito', '1234123412341234', 1, now()),
 ('Credito', '1234123412341234', 2, now()),
 ('Dinheiro', null, 1, now()),
@@ -5811,6 +5827,22 @@ insert into pedido_produto (fk_pro_cd_id, fk_ped_cd_id, pedpro_int_quantidade) v
 	(5,10,4);
 
 
+=======
+('Débito', '1234123412341234', 17, now()),
+('Credito', '1234123412341234', 18, now()),
+('Dinheiro', null, 19, now()),
+('Pix', null, 20, now()),
+('Fiado', 'Esperando...', 21, now());
+
+--inserindo pedido_produto
+insert into pedido_produto (fk_pro_cd_id, fk_ped_cd_id, pedpro_int_quantidade) values 
+	(10,8,1),
+	(19,9,10),
+	(12,7,2),
+	(18,6,3),
+	(17,10,4);
+	
+>>>>>>> 000141ddc6985860397ca7e13f7062173d37179d
 --criando consultas com group by
 select
 	count(e.est_tx_estado),
@@ -5830,6 +5862,7 @@ select * from endereco;
 select * from endereco where end_tx_rua like '%i%';
 create index nomerua on endereco(end_tx_rua);
 
+<<<<<<< HEAD
 select * from produto;
 select * from produto where pro_tx_nomepro  like 'Violão%';
 create index nomeproduto on produto(pro_tx_nomepro);
@@ -5842,3 +5875,17 @@ create index nomeest on estado(est_tx_estado);
 select * from usuario;
 select * from usuario where user_tx_nome  like '%i%';
 create index nomeuser on usuario(user_tx_nome);
+=======
+select * from usuario;
+select * from usuario where user_tx_nome like '%e%';
+create index nomeusario on usuario(user_tx_nome);
+
+select * from produto;
+select * from produto where pro_tx_nomepro like 'B%';
+create index nomeproduto on produto(pro_tx_nomepro);
+
+--mesmo com index a busca de estado não é otimizada
+select * from estado;
+select * from estado where est_tx_estado  like '%a%';
+create index nomeest on estado(est_tx_estado);
+>>>>>>> 000141ddc6985860397ca7e13f7062173d37179d
