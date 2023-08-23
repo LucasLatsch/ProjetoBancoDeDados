@@ -135,8 +135,8 @@ join produto pr on pp.fk_pro_cd_id  = pr.pro_cd_id ;
 select * from nota_fiscal nf ;
 
 --inserindo dados nas tabelas
--- inserindo estados
 
+-- inserindo estados
 insert into estado (est_cd_id, est_tx_estado, est_tx_sigla) values 
 (1, 'Acre', 'AC'),
 (2, 'Alagoas', 'AL'),
@@ -165,9 +165,7 @@ insert into estado (est_cd_id, est_tx_estado, est_tx_sigla) values
 (25, 'Sergipe', 'SE'),
 (26, 'São Paulo', 'SP'),
 (27, 'Tocantins', 'TO');
-
 select * from estado;
-
 update  estado set est_tx_pais = 'Brasil' where est_cd_id < 28;
 
 --inserindo cidades
