@@ -1,10 +1,20 @@
-<h1 align="center">Banco de Dados</h1>
-<h2 align="center">Projeto Final</h2>
-<h3 align="center">
-</br>
 
-## <img  height="40px" align="center" src="../assets/coin.gif">E-COMMERCE TRADICIONAL
+# DeBeats - F# store
 
+
+Este projeto foi idealizado para o Trabalho Final em Grupo da disciplina de Banco de Dados, Serratec - 2023.2 - Petrópolis, turma 12.
+
+<p align="center">
+
+  <img src="https://uploaddeimagens.com.br/images/004/586/063/original/0895610a-b98e-44c2-ba2a-07e56fc0c469.png?1692812928"  width="400" height="250"/>
+  
+</p>
+
+E-COMMERCE TRADICIONAL
+
+Eleita a loja de instrumentos musicais mais completa do Brasil!!!
+A Debeats - F# Store faz parte de uma das maiores e mais respeitadas redes de lojas de instrumentos musicais, aúdio profissional e tecnológico do Brasil. Estamos preparadas para atender todas as necessidades de nossos clientes da melhor maneira possível. Desde simples acessórios de instrumentos musicais até grandes projetos de aúdio profissional.
+Ta esperando o quê?!  #VempraDeBeatsStore
 
   <!-- Indice -->
 ## ✔ ÍNDICE ##
@@ -28,16 +38,8 @@ Teclados;
 Cordas, banjos, cavacos, violinos, etc.
 Acessórios, banquetas, palhetas e correias;
 
- 
-Dbeats F# store
-Eleita a loja de instrumentos musicais mais completa do Brasil!!!
-A Dbeats F# Store faz parte de uma das maiores e mais respeitadas redes de lojas de instrumentos musicais,aúdio profissional e tecnológico do Brasil.
-Estamos preparadas para atender todas as necessidades de nossos clientes da melhor maneira possível. Desde simples acessórios de instrumentos musicais até grandes projetos de aúdio profissional.
-Ta esperando o quê   #VempraDeBeatsStore
 <!-- Quais são as funcionalidades --> 
 ## 🔄 FUNCIONALIDADES ## 
-
-
 
 -
 ## 💻 ACESSO AO PROJETO ##
@@ -60,9 +62,11 @@ https://github.com/LucasLatsch/ProjetoBancoDeDados
  <!-- Equipe 5 - Pessoas que particiapream do Desenvolvimento do Projeto --> 
 ## 👥 AUTORES DO PROJETO ## 
 
-
-
-
+- [GitHub - Emanuel Cardoso](https://www.github.com/ecard58)
+- [GitHub - Luciana Brand](https://github.com/lucianabrand)
+- [GitHub - Bernardo Granja](https://github.com/YoloDesu)
+- [GitHub - Lucas Latsch](https://github.com/LucasLatsch)
+- [GitHub - Amanda Tavares](https://www.github.com/amandapts)
 
 <br>
 <p align="center">
