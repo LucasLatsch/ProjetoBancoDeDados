@@ -1,30 +1,7 @@
 -- criando a base de dados
 create database debeats;
 
---criando cliente (finalizado aparentemente)
-create user cliente password '123456';
-grant select
-on produto, categoria
-to cliente;
-grant insert 
-on pedido to cliente;
 
---criando vendedor
-create user vendedor password '112233';
-grant select 
-on categoria, cidade, cliente, endereco, estado,
-funcionario, pedido, pedido_produto, produto, usuario, nota_fiscal
-to vendedor;
-grant insert, update 
-on produto 
-to vendedor;
-
---criando administrador
-create user administrador password '134679';
-grant all 
-on categoria, cidade, cliente, endereco, estado,
-funcionario, pedido, pedido_produto, produto, usuario, nota_fiscal
-to administrador;
 
 --criando tabelas
 
@@ -34,6 +11,8 @@ create table categoria(
 	cat_tx_descrição varchar(50),
 	primary key (cat_cd_id)
 );
+alter table categoria rename column cat_tx_descrição to cat_tx_descricao; 
+alter table categoria alter column cat_tx_descricao type varchar(200);
 
 create table usuario(
 	user_cd_id serial,
@@ -107,14 +86,8 @@ alter table pedido add column ped_dt_data_venda date;
 alter table pedido rename column ped_int_num_cartao to ped_tx_num_cartao;
 alter table pedido drop column ped_int_quantidade;
 
-create table categoria(
-	cat_cd_id serial,
-	cat_tx_nome varchar(50),
-	cat_tx_descrição varchar(50),
-	primary key (cat_cd_id)
-);
-alter table categoria rename column cat_tx_descrição to cat_tx_descricao; 
-alter table categoria alter column cat_tx_descricao type varchar(200);
+
+
 
 create table produto(
 	pro_cd_id serial,
@@ -122,7 +95,7 @@ create table produto(
 	pro_tx_descricao varchar(256),
 	pro_int_estoque integer,
 	pro_dt_datafab date,
-	pro_nm_valor float(4,2),
+	pro_nm_valor float(4),
 	fk_fun_cd_id integer,
 	fk_cat_cd_id integer,
 	primary key (pro_cd_id),
@@ -145,8 +118,9 @@ create view nota_fiscal as
 select
     p.ped_tx_forma_pg ,
     p.ped_dt_data_venda ,
-    p.ped_int_quantidade,
-    pr.pro_int_valor ,
+    pp.pedpro_int_quantidade ,
+    pr.pro_nm_valor ,
+    pp.pedpro_int_quantidade * pr.pro_nm_valor as preco_total,
     pr.pro_tx_nomepro,
     u.user_tx_nome ,
     u.user_tx_cpf 
@@ -155,7 +129,7 @@ JOIN cliente c ON u.user_cd_id = c.fk_user_cd_id
 JOIN pedido p ON c.cli_cd_id  = p.fk_cli_cd_id 
 JOIN pedido_produto pp ON p.ped_cd_id  = pp.fk_ped_cd_id 
 join produto pr on pp.fk_pro_cd_id  = pr.pro_cd_id ;
-
+ drop view nota_fiscal; 
 --consultas na nota fiscal
 select * from nota_fiscal order by ped_tx_forma_pg;
 select * from nota_fiscal where pro_tx_nomepro like 'B%';
@@ -5821,21 +5795,22 @@ insert into produto (pro_tx_nomepro, pro_tx_descricao, pro_int_estoque, pro_dt_d
 ('Baqueta', 'Souvenier favorito dos shows do rock',20,to_date('2023-08-15','yyyy-mm-dd'), 50, 1, 8);
 
 -- inserindo pedido
-insert into pedido (ped_tx_forma_pg, ped_tx_num_cartao, ped_int_quantidade, ped_dt_data_venda) values 
+insert into pedido (ped_tx_forma_pg, ped_tx_num_cartao, fk_cli_cd_id, ped_dt_data_venda) values 
 ('Débito', '1234123412341234', 1, now()),
 ('Credito', '1234123412341234', 2, now()),
 ('Dinheiro', null, 1, now()),
-('Pix', null, 5, now()),
+('Pix', null, 4, now()),
 ('Fiado', 'Esperando...', 3, now());
 
 --inserindo pedido_produto
 insert into pedido_produto (fk_pro_cd_id, fk_ped_cd_id, pedpro_int_quantidade) values 
-	(10,9,1),
-	(19,9,10),
-	(12,13,2),
-	(18,12,3),
-	(17,10,4);
-	
+	(1,6,1),
+	(12,7,10),
+	(3,8,2),
+	(9,9,3),
+	(5,10,4);
+
+
 --criando consultas com group by
 select
 	count(e.est_tx_estado),
@@ -5847,7 +5822,6 @@ group by
 	e.est_tx_estado order by e.est_tx_estado ;
 
 --exemplos de index
-
 select * from cidade;
 select * from cidade where cid_tx_nome like 'P%';
 create index nomecidade on cidade(cid_tx_nome);
@@ -5855,3 +5829,16 @@ create index nomecidade on cidade(cid_tx_nome);
 select * from endereco;
 select * from endereco where end_tx_rua like '%i%';
 create index nomerua on endereco(end_tx_rua);
+
+select * from produto;
+select * from produto where pro_tx_nomepro  like 'Violão%';
+create index nomeproduto on produto(pro_tx_nomepro);
+
+
+select * from estado;
+select * from estado where est_tx_estado  like '%a%';
+create index nomeest on estado(est_tx_estado);
+
+select * from usuario;
+select * from usuario where user_tx_nome  like '%i%';
+create index nomeuser on usuario(user_tx_nome);
