@@ -21,10 +21,9 @@ Entregamos em **TODO** o território nacional. Sim. TODO.
   <!-- Indice -->
 ## ✔ ÍNDICE ##
  1. Loja online
- 2. Funcionalidades
- 3. Como acessar o projeto da loja
- 5. Tecnologias utilizadas
- 6. Autores do Projeto
+ 2. Como acessar o projeto da loja
+ 3. Tecnologias utilizadas
+ 4. Autores do Projeto
 
  <!-- Descrição do Projeto --> 
 ## 🌎 LOJA ONLINE ##
